@@ -1,67 +1,74 @@
 {
-    "routers": [
-      {
-        "name": "RouterA",
-        "interfaces": [
-          {
-            "name": "GigabitEthernet0/0",
-            "ip_address": "192.168.1.1",
-            "subnet_mask": "255.255.255.0",
-            "description": "LAN Interface"
-          },
-          {
-            "name": "GigabitEthernet0/1",
-            "ip_address": "10.0.0.1",
-            "subnet_mask": "255.255.255.252",
-            "description": "Point-to-Point Link to RouterB"
+  "routers": [
+    {
+      "name": "RouterA",
+      "interfaces": [
+        {
+          "name": "GigabitEthernet0/0",
+          "ip_address": "192.168.1.1",
+          "subnet_mask": "255.255.255.0",
+          "description": "LAN Interface",
+          "ospf": {
+            "process_id": 1,
+            "area": 0
           }
-        ]
-      },
-      {
-        "name": "RouterB",
-        "interfaces": [
-          {
-            "name": "GigabitEthernet0/0",
-            "ip_address": "10.0.0.2",
-            "subnet_mask": "255.255.255.252",
-            "description": "Point-to-Point Link to RouterA"
-          },
-          {
-            "name": "GigabitEthernet0/1",
-            "ip_address": "172.16.0.1",
-            "subnet_mask": "255.255.255.0",
-            "description": "LAN Interface"
+        },
+        {
+          "name": "GigabitEthernet0/1",
+          "ip_address": "10.0.0.1",
+          "subnet_mask": "255.255.255.252",
+          "description": "Point-to-Point Link to RouterB",
+          "ospf": {
+            "process_id": 1,
+            "area": 0
           }
-        ]
-      }
-    ],
-    "ospf": [
-      {
-        "routers": ["RouterA", "RouterB"],
-        "process_id": 1,
-        "networks": [
-          {"address": "10.0.0.0", "mask": "255.255.255.252", "area": 0},
-          {"address": "192.168.1.0", "mask": "255.255.255.0", "area": 0},
-          {"address": "172.16.0.0", "mask": "255.255.255.0", "area": 0}
-        ]
-      }
-    ],
-    "bgp": [
-      {
-        "router": "RouterA",
+        }
+      ],
+      "bgp": {
         "local_as": 65001,
         "neighbors": [
-          {"ip": "10.0.0.2", "remote_as": 65002}
+          {
+            "neighbor_ip": "10.0.0.2",
+            "remote_as": 65002
+          }
         ],
         "advertised_networks": ["192.168.1.0/24"]
-      },
-      {
-        "router": "RouterB",
+      }
+    },
+    {
+      "name": "RouterB",
+      "interfaces": [
+        {
+          "name": "GigabitEthernet0/0",
+          "ip_address": "10.0.0.2",
+          "subnet_mask": "255.255.255.252",
+          "description": "Point-to-Point Link to RouterA",
+          "ospf": {
+            "process_id": 1,
+            "area": 0
+          }
+        },
+        {
+          "name": "GigabitEthernet0/1",
+          "ip_address": "172.16.0.1",
+          "subnet_mask": "255.255.255.0",
+          "description": "LAN Interface",
+          "ospf": {
+            "process_id": 1,
+            "area": 0
+          }
+        }
+      ],
+      "bgp": {
         "local_as": 65002,
         "neighbors": [
-          {"ip": "10.0.0.1", "remote_as": 65001}
+          {
+            "neighbor_ip": "10.0.0.1",
+            "remote_as": 65001
+          }
         ],
         "advertised_networks": ["172.16.0.0/24"]
       }
-    ]
-  }
+    }
+  ]
+}
