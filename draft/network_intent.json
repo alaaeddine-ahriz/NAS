@@ -2,11 +2,13 @@
   "routers": [
     {
       "name": "PE1",
+      "name": "PE1",
       "interfaces": [
         {
           "name": "GigabitEthernet1/0",
           "ip_address": "192.168.1.1",
           "subnet_mask": "255.255.255.252",
+          "description": "PE1->P1",
           "description": "PE1->P1",
           "ospf": {
             "process_id": 1,
@@ -22,13 +24,22 @@
         {
           "name": "GigabitEthernet3/0",
           "ip_address": "111.20.32.1",
+          "ip_address": "111.20.31.1",
           "subnet_mask": "255.255.255.252",
+          "description": "PE1->CE1"
+        },
+        {
+          "name": "GigabitEthernet3/0",
+          "ip_address": "111.20.32.1",
+          "subnet_mask": "255.255.255.252",
+          "description": "PE1->CE2"
           "description": "PE1->CE2"
         },
         {
           "name": "Loopback0",
           "ip_address": "1.1.1.1",
           "subnet_mask": "255.255.255.255",
+          "description": "1.1.1.1"
           "description": "1.1.1.1"
         }
       ],
@@ -50,9 +61,11 @@
           }
         ],
         "advertised_networks": [""]
+        "advertised_networks": [""]
       }
     },
     {
+      "name": "PE2",
       "name": "PE2",
       "interfaces": [
         {
@@ -64,10 +77,22 @@
         {
           "name": "GigabitEthernet2/0",
           "ip_address": "192.168.1.9",
+          "ip_address": "111.20.33.1",
           "subnet_mask": "255.255.255.252",
+          "description": "PE2->CE11"
+        },
+        {
+          "name": "GigabitEthernet2/0",
+          "ip_address": "192.168.1.9",
+          "subnet_mask": "255.255.255.252",
+          "description": "PE2->P2"
           "description": "PE2->P2"
         },
         {
+          "name": "GigabitEthernet3/0",
+          "ip_address": "111.20.34.1",
+          "subnet_mask": "255.255.255.252",
+          "description": "PE2->CE21"
           "name": "GigabitEthernet3/0",
           "ip_address": "111.20.34.1",
           "subnet_mask": "255.255.255.252",
@@ -78,7 +103,9 @@
           "ip_address": "2.2.2.2",
           "subnet_mask": "255.255.255.255",
           "description": "loopback PE2"
+          "description": "loopback PE2"
         }
+    ],
     ],
       "bgp": {
         "local_as": 111,
