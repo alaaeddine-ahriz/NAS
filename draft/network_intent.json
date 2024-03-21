@@ -1,20 +1,20 @@
 {
   "routers": [
     {
-      "name": "RouterA",
+      "name": "RouterPE1",
       "interfaces": [
         {
-          "name": "GigabitEthernet0/0",
+          "name": "GigabitEthernet1/0",
           "ip_address": "192.168.1.1",
-          "subnet_mask": "255.255.255.0",
-          "description": "LAN Interface",
+          "subnet_mask": "255.255.255.252",
+          "description": "",
           "ospf": {
             "process_id": 1,
             "area": 0
           }
         },
         {
-          "name": "GigabitEthernet0/1",
+          "name": "GigabitEthernet2/0",
           "ip_address": "10.0.0.1",
           "subnet_mask": "255.255.255.252",
           "description": "Point-to-Point Link to RouterB",
@@ -46,13 +46,13 @@
       }
     },
     {
-      "name": "RouterB",
+      "name": "Router P1",
       "interfaces": [
         {
-          "name": "GigabitEthernet0/0",
-          "ip_address": "10.0.0.2",
+          "name": "GigabitEthernet1/0",
+          "ip_address": "192.168.1.2",
           "subnet_mask": "255.255.255.252",
-          "description": "Point-to-Point Link to RouterA",
+          "description": "",
           "ospf": {
             "process_id": 1,
             "area": 0
