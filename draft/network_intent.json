@@ -1,13 +1,13 @@
 {
   "routers": [
     {
-      "name": "RouterPE1",
+      "name": "PE1",
       "interfaces": [
         {
           "name": "GigabitEthernet1/0",
           "ip_address": "192.168.1.1",
           "subnet_mask": "255.255.255.252",
-          "description": "",
+          "description": "PE1->P1",
           "ospf": {
             "process_id": 1,
             "area": 0
@@ -15,80 +15,200 @@
         },
         {
           "name": "GigabitEthernet2/0",
-          "ip_address": "10.0.0.1",
+          "ip_address": "111.20.31.1",
           "subnet_mask": "255.255.255.252",
-          "description": "Point-to-Point Link to RouterB",
-          "ospf": {
-            "process_id": 1,
-            "area": 0
-          }
+          "description": "PE1->CE1"
+        },
+        {
+          "name": "GigabitEthernet3/0",
+          "ip_address": "111.20.32.1",
+          "subnet_mask": "255.255.255.252",
+          "description": "PE1->CE2"
         },
         {
           "name": "Loopback0",
           "ip_address": "1.1.1.1",
           "subnet_mask": "255.255.255.255",
-          "description": "RouterA Loopback Interface",
-          "ospf": {
-            "process_id": 1,
-            "area": 0
-          }
+          "description": "1.1.1.1"
         }
       ],
       "bgp": {
-        "local_as": 65001,
+        "local_as": 111,
         "neighbors": [
           {
-            "neighbor_ip": "10.0.0.2",
-            "remote_as": 65002
+            "neighbor_ip": "2.2.2.2",
+            "remote_as": 111
           }
         ],
-        "advertised_networks": ["192.168.1.0/24"]
+        "advertised_networks": [""]
       }
     },
     {
-      "name": "Router P1",
+      "name": "PE2",
       "interfaces": [
         {
           "name": "GigabitEthernet1/0",
-          "ip_address": "192.168.1.2",
+          "ip_address": "111.20.33.1",
           "subnet_mask": "255.255.255.252",
-          "description": "",
-          "ospf": {
-            "process_id": 1,
-            "area": 0
-          }
+          "description": "PE2->CE11"
         },
         {
-          "name": "GigabitEthernet0/1",
-          "ip_address": "172.16.0.1",
-          "subnet_mask": "255.255.255.0",
-          "description": "LAN Interface",
-          "ospf": {
-            "process_id": 1,
-            "area": 0
-          }
+          "name": "GigabitEthernet2/0",
+          "ip_address": "192.168.1.9",
+          "subnet_mask": "255.255.255.252",
+          "description": "PE2->P2"
+        },
+        {
+          "name": "GigabitEthernet3/0",
+          "ip_address": "111.20.34.1",
+          "subnet_mask": "255.255.255.252",
+          "description": "PE2->CE21"
         },
         {
           "name": "Loopback0",
           "ip_address": "2.2.2.2",
           "subnet_mask": "255.255.255.255",
-          "description": "RouterB Loopback Interface",
-          "ospf": {
-            "process_id": 1,
-            "area": 0
-          }
+          "description": "loopback PE2"
         }
-      ],
+    ],
       "bgp": {
-        "local_as": 65002,
+        "local_as": 111,
         "neighbors": [
           {
-            "neighbor_ip": "10.0.0.1",
-            "remote_as": 65001
+            "neighbor_ip": "1.1.1.1",
+            "remote_as": 111
           }
         ],
-        "advertised_networks": ["172.16.0.0/24"]
+        "advertised_networks": [""]
       }
+    },
+    {
+        "name": "P2",
+        "interfaces": [
+          {
+            "name": "GigabitEthernet1/0",
+            "ip_address": "192.168.1.10",
+            "subnet_mask": "255.255.255.252",
+            "description": "P2->PE2"
+          },
+          {
+            "name": "GigabitEthernet2/0",
+            "ip_address": "192.168.1.12",
+            "subnet_mask": "255.255.255.252",
+            "description": "P2->P1"
+          },
+          {
+            "name": "Loopback0",
+            "ip_address": "2.2.0.2",
+            "subnet_mask": "255.255.255.255",
+            "description": "loopback P2"
+          }
+      ]
+    },
+    {
+        "name": "P1",
+        "interfaces": [
+          {
+            "name": "GigabitEthernet2/0",
+            "ip_address": "192.168.1.2",
+            "subnet_mask": "255.255.255.252",
+            "description": "P1->PE1"
+          },
+          {
+            "name": "GigabitEthernet1/0",
+            "ip_address": "192.168.1.11",
+            "subnet_mask": "255.255.255.252",
+            "description": "P1->PE2"
+          },
+          {
+            "name": "Loopback0",
+            "ip_address": "1.1.0.1",
+            "subnet_mask": "255.255.255.255",
+            "description": "loopback P1"
+          }
+      ],
+        "bgp": {
+          "local_as": 111,
+          "neighbors": [
+            {
+              "neighbor_ip": "1.1.1.1",
+              "remote_as": 111
+            }
+          ],
+          "advertised_networks": [""]
+        }
+      },
+    {
+        "name": "CE12",
+        "interfaces": [
+          {
+            "name": "GigabitEthernet1/0",
+            "ip_address": "111.20.33.2",
+            "subnet_mask": "255.255.255.252",
+            "description": "CE22->PE2"
+          },
+          {
+            "name": "Loopback0",
+            "ip_address": "3.1.1.1",
+            "subnet_mask": "255.255.255.255",
+            "description": "loopback PE2"
+          }
+    
+        ]
+    },
+    {
+        "name": "CE21",
+        "interfaces": [
+          {
+            "name": "GigabitEthernet1/0",
+            "ip_address": "111.20.32.2",
+            "subnet_mask": "255.255.255.252",
+            "description": "CE11->PE1"
+          },
+          {
+            "name": "Loopback0",
+            "ip_address": "2.1.1.1",
+            "subnet_mask": "255.255.255.255",
+            "description": "loopback PE2"
+          }
+    
+        ]
+    },
+    {
+        "name": "CE22",
+        "interfaces": [
+          {
+            "name": "GigabitEthernet1/0",
+            "ip_address": "111.20.34.2",
+            "subnet_mask": "255.255.255.252",
+            "description": "CE22->PE2"
+          },
+          {
+            "name": "Loopback0",
+            "ip_address": "3.1.1.1",
+            "subnet_mask": "255.255.255.255",
+            "description": "loopback PE2"
+          }
+    
+        ]
+    },
+    {
+        "name": "CE11",
+        "interfaces": [
+          {
+            "name": "GigabitEthernet1/0",
+            "ip_address": "111.20.31.2",
+            "subnet_mask": "255.255.255.252",
+            "description": "CE11->PE1"
+          },
+          {
+            "name": "Loopback0",
+            "ip_address": "2.1.1.1",
+            "subnet_mask": "255.255.255.255",
+            "description": "loopback PE2"
+          }
+    
+        ]
     }
   ]
 }
