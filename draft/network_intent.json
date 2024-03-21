@@ -22,6 +22,16 @@
             "process_id": 1,
             "area": 0
           }
+        },
+        {
+          "name": "Loopback0",
+          "ip_address": "1.1.1.1",
+          "subnet_mask": "255.255.255.255",
+          "description": "RouterA Loopback Interface",
+          "ospf": {
+            "process_id": 1,
+            "area": 0
+          }
         }
       ],
       "bgp": {
@@ -53,6 +63,16 @@
           "ip_address": "172.16.0.1",
           "subnet_mask": "255.255.255.0",
           "description": "LAN Interface",
+          "ospf": {
+            "process_id": 1,
+            "area": 0
+          }
+        },
+        {
+          "name": "Loopback0",
+          "ip_address": "2.2.2.2",
+          "subnet_mask": "255.255.255.255",
+          "description": "RouterB Loopback Interface",
           "ospf": {
             "process_id": 1,
             "area": 0

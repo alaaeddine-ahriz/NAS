@@ -39,5 +39,5 @@ def generate_config_files(intent_file):
         print(f"Configuration for {router['name']} written to {config_filename}")
 
 # Assuming the intent file is named 'network_intent.json'
-intent_file = 'network_intent.json'
+intent_file = 'C:\\Users\\alaae\\Documents\\INSA Lyon\\3 TCA\\Projet NAS\\NAS\\draft\\alaaeddine\\network_intent.json'
 generate_config_files(intent_file)
