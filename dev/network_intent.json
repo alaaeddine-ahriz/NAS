@@ -34,6 +34,7 @@
       ],
       "bgp": {
         "local_as": 111,
+        "bgp_id":"1.1.1.1",
         "neighbors": [
           {
             "neighbor_ip": "2.2.2.2",
@@ -73,6 +74,7 @@
     ],
       "bgp": {
         "local_as": 111,
+        "bgp_id":"1.1.1.1",
         "neighbors": [
           {
             "neighbor_ip": "1.1.1.1",
@@ -129,6 +131,7 @@
       ],
         "bgp": {
           "local_as": 111,
+          "bgp_id":"1.1.1.1",
           "neighbors": [
             {
               "neighbor_ip": "1.1.1.1",

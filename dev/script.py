@@ -37,14 +37,22 @@ ip tcp synwait-time 5
 
 def generate_interface_config(interfaces):
     config = ""
+    ospf_activated = False
+    ospf_process_id = ""
     for interface in interfaces:
         config += f"interface {interface['name']}\n"
         config += f" ip address {interface['ip_address']} {interface['subnet_mask']}\n"
         config += " negotiation auto\n"
         if "ospf" in interface:
             config += f" ip ospf {interface['ospf']['process_id']} area {interface['ospf']['area']}\n"
+            ospf_activated = True
+            ospf_process_id = f"{interface['ospf']['process_id']}"
         if interface.get("mpls", False):
             config += " mpls ip\n"
+        config += "!\n"
+    if ospf_activated:
+        config += f"router ospf {ospf_process_id}\n"
+        config += f" redistribute connected subnets\n"
         config += "!\n"
     return config
 
@@ -57,7 +65,7 @@ def generate_bgp_config(bgp):
     config += " !\n address-family ipv4\n"
     for neighbor in bgp['neighbors']:
         config += f"  neighbor {neighbor['neighbor_ip']} activate\n"
-    config += " exit-address-family\n!\n"
+    config += f" exit-address-family\n!\n"
     return config
 
 def generate_line_config():
@@ -106,5 +114,5 @@ def generate_config_files(intent_file_path):
         print(f"Configuration for {router['name']} written to {config_filename}")
 
 # To use this script, make sure you have a 'network_intent.json' file in the same directory
-intent_file_path = 'C:\\Users\\alaae\\Documents\\INSA Lyon\\3 TCA\\Projet NAS\\NAS\\draft\\network_intent.json'
+intent_file_path = 'C:\\Users\\alaae\\Documents\\INSA Lyon\\3 TCA\\Projet NAS\\NAS\\dev\\network_intent.json'
 generate_config_files(intent_file_path)
