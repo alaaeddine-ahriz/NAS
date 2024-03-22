@@ -39,11 +39,13 @@
         "neighbors": [
           {
             "neighbor_ip": "2.2.2.2",
-            "remote_as": 111
+            "remote_as": 111,
+            "update_source": "Loopback0"
           },
           {
             "neighbor_ip": "111.20.31.1",
-            "remote_as": 110
+            "remote_as": 110,
+            "vrf": "client_1"
           },
           {
             "neighbor_ip": "111.20.32.1",
