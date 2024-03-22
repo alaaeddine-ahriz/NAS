@@ -1,6 +1,6 @@
 hostname PE1
 
-! Last configuration change at 11:07:46 UTC Fri Mar 22 2024
+! Last configuration change at 11:58:55 UTC Fri Mar 22 2024
 !
 version 15.2
 service timestamps debug datetime msec
@@ -12,8 +12,8 @@ boot-end-marker
 !
 vrf definition client_1
  rd 111:10
- route-target export 111:1000
- route-target import 111:1000
+ route-target export 111:1
+ route-target import 111:1
  !
  address-family ipv4
  exit-address-family
@@ -78,6 +78,7 @@ router bgp 111
  bgp router-id 1.1.1.1
  bgp log-neighbor-changes
  neighbor 2.2.2.2 remote-as 111
+ neighbor 2.2.2.2 update-source Loopback0
  neighbor 111.20.31.1 remote-as 110
  neighbor 111.20.32.1 remote-as 112
  !
@@ -86,27 +87,13 @@ router bgp 111
   neighbor 111.20.31.1 activate
   neighbor 111.20.32.1 activate
  exit-address-family
+ !
+ address-family vpnv4
+ exit-address-family
+ !
+ address-family ipv4 vrf client_1
+  neighbor 111.20.31.1 remote-as 110
+  neighbor 111.20.31.1 activate
+ exit-address-family
+ !
 !
-
-!
-ip forward-protocol nd
-!
-no ip http server
-no ip http secure-server
-!
-control-plane
-!
-line con 0
- exec-timeout 0 0
- privilege level 15
- logging synchronous
- stopbits 1
-line aux 0
- exec-timeout 0 0
- privilege level 15
- logging synchronous
- stopbits 1
-line vty 0 4
- login
-!
-end

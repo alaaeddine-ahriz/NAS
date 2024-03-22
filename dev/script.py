@@ -45,7 +45,7 @@ def generate_vrf_config(vrfs, bgp):
     for vrf in vrfs:
         config += f"!\n"
         config += f"vrf definition {vrf['nom_vrf']}\n"
-        config += f" rd {bgp['local_as']}:{vrf['rd_vrf_y']}\n"
+        config += f" rd {bgp['local_as']}:{vrf['route_distinguisher_client']}\n"
         config += f" route-target export {vrf['route_target']}\n"
         config += f" route-target import {vrf['route_target']}\n"
         config += f" !\n"
