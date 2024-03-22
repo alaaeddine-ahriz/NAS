@@ -11,7 +11,8 @@
           "ospf": {
             "process_id": 1,
             "area": 0
-          }
+          },
+          "mpls": true
         },
         {
           "name": "GigabitEthernet2/0",
@@ -51,7 +52,8 @@
           "name": "GigabitEthernet1/0",
           "ip_address": "111.20.33.1",
           "subnet_mask": "255.255.255.252",
-          "description": "PE2->CE11"
+          "description": "PE2->CE11",
+          "mpls": true
         },
         {
           "name": "GigabitEthernet2/0",
