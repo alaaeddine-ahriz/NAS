@@ -11,7 +11,7 @@ formatted_time = current_utc_time.strftime('%H:%M:%S UTC %a %b %d %Y')
 formatted_time
 
 
-def generate_static_config(timestamp=formatted_time):
+def generate_static_config_1(timestamp=formatted_time):
     return f"""
 ! Last configuration change at {timestamp}
 !
@@ -21,6 +21,11 @@ service timestamps log datetime msec
 !
 boot-start-marker
 boot-end-marker
+!
+"""
+
+def generate_static_config_2():
+    return f"""
 !
 no aaa new-model
 no ip icmp rate-limit unreachable
@@ -34,6 +39,19 @@ multilink bundle-name authenticated
 ip tcp synwait-time 5
 !
 """
+
+def generate_vrf_config(vrfs, bgp):
+    config = ""
+    for vrf in vrfs:
+        config += f"!\n"
+        config += f"vrf definition {vrf['nom_vrf']}\n"
+        config += f" rd {bgp['local_as']}:{vrf['rd_vrf_y']}\n"
+        config += f" route-target export {vrf['route_target']}\n"
+        config += f" route-target import {vrf['route_target']}\n"
+        config += f" !\n"
+        config += f" address-family ipv4\n exit-address-family\n"
+        config += f"!"
+    return config
 
 def generate_interface_config(interfaces):
     config = ""
@@ -69,6 +87,7 @@ def generate_bgp_config(bgp):
     return config
 
 def generate_line_config():
+
     return """
 !
 ip forward-protocol nd
@@ -100,7 +119,15 @@ def generate_config_files(intent_file_path):
     
     for router in intent_data['routers']:
         config = f"hostname {router['name']}\n"
-        config += generate_static_config()
+
+        config += generate_static_config_1()
+
+        # Generate VRF config if needed
+        if 'vrf' in router:
+            config += generate_vrf_config(router['vrf'],router['bgp'])
+
+        config += generate_static_config_2()
+        config += generate_line_config()
         config += generate_interface_config(router['interfaces'])
         # Generate BGP config if needed
         if 'bgp' in router:
@@ -114,5 +141,5 @@ def generate_config_files(intent_file_path):
         print(f"Configuration for {router['name']} written to {config_filename}")
 
 # To use this script, make sure you have a 'network_intent.json' file in the same directory
-intent_file_path = 'C:\\Users\\alaae\\Documents\\INSA Lyon\\3 TCA\\Projet NAS\\NAS\\dev\\network_intent.json'
+intent_file_path = 'C:\\Users\\alaae\\Documents\\INSA Lyon\\3 TCA\\Projet NAS\\NAS\\dev\\network_intent copy.json'
 generate_config_files(intent_file_path)

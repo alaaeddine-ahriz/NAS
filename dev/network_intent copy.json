@@ -51,7 +51,14 @@
           }
         ],
         "advertised_networks": [""]
+      },
+
+      "vrf": {
+        "nom_vrf":"client_1",
+        "route_distinguisher_client": 10,
+        "route_target":"111:1"
       }
+      
     },
     {
       "name": "PE2",
