@@ -74,40 +74,58 @@ def generate_interface_config(interfaces):
         config += "!\n"
     return config
 
-def generate_bgp_config(bgp, vrfs=None):
+def generate_bgp_config(bgp, router_interface_ips, vrfs=None):
     config = f"router bgp {bgp['local_as']}\n"
     config += f" bgp router-id {bgp['bgp_id']}\n"
     config += " bgp log-neighbor-changes\n"
-    for neighbor in bgp['neighbors']:
-        config += f" neighbor {neighbor['neighbor_ip']} remote-as {neighbor['remote_as']}\n"
-        if 'update_source' in neighbor:
-            config += f" neighbor {neighbor['neighbor_ip']} update-source {neighbor['update_source']}\n"
-    config += " !\n"
+
+    # Check and prepare global neighbors
+    for neighbor in bgp.get('neighbors', []):
+        if 'vrf' not in neighbor or not neighbor['vrf']:
+            # Assuming a neighbor might not always have 'name', handle accordingly
+            neighbor_ip = ''
+            if 'name' in neighbor and 'interface' in neighbor:
+                neighbor_name = neighbor['name']
+                neighbor_interface = neighbor['interface']
+                neighbor_ip = router_interface_ips.get(neighbor_name, {}).get(neighbor_interface, "")
+            elif 'neighbor_ip' in neighbor:
+                neighbor_ip = neighbor['neighbor_ip']
+            
+            if neighbor_ip:
+                config += f" neighbor {neighbor_ip} remote-as {neighbor.get('remote_as', '')}\n"
+                if 'update_source' in neighbor:
+                    config += f" neighbor {neighbor_ip} update-source {neighbor['update_source']}\n"
     
-    # IPv4 address family
+    # Configure global address-family for ipv4
     config += " address-family ipv4\n"
-    for neighbor in bgp['neighbors']:
-        config += f"  neighbor {neighbor['neighbor_ip']} activate\n"
+    for neighbor in bgp.get('neighbors', []):
+        if 'vrf' not in neighbor or not neighbor['vrf']:
+            neighbor_ip = neighbor.get('neighbor_ip', '')
+            if 'name' in neighbor and 'interface' in neighbor:
+                neighbor_name = neighbor['name']
+                neighbor_interface = neighbor['interface']
+                neighbor_ip = router_interface_ips.get(neighbor_name, {}).get(neighbor_interface, "")
+            if neighbor_ip:
+                config += f"  neighbor {neighbor_ip} activate\n"
     config += " exit-address-family\n"
-    config += " !\n"
-    
-    # VPNv4 address family
-    config += " address-family vpnv4\n"
-    config += " exit-address-family\n"
-    config += " !\n"
-    
-    # VRF-specific address families
+
+    # Configuring VRF-specific neighbors
     if vrfs:
         for vrf in vrfs:
             config += f" address-family ipv4 vrf {vrf['nom_vrf']}\n"
-            for neighbor in bgp['neighbors']:
-                if 'vrf' in neighbor and neighbor['vrf'] == vrf['nom_vrf']:
-                    config += f"  neighbor {neighbor['neighbor_ip']} remote-as {neighbor['remote_as']}\n"
-                    if 'update_source' in neighbor:
-                        config += f"  neighbor {neighbor['neighbor_ip']} update-source {neighbor['update_source']}\n"
-                    config += f"  neighbor {neighbor['neighbor_ip']} activate\n"
+            for neighbor in bgp.get('neighbors', []):
+                if neighbor.get('vrf') == vrf['nom_vrf']:
+                    neighbor_ip = neighbor.get('neighbor_ip', '')
+                    if 'name' in neighbor and 'interface' in neighbor:
+                        neighbor_name = neighbor['name']
+                        neighbor_interface = neighbor['interface']
+                        neighbor_ip = router_interface_ips.get(neighbor_name, {}).get(neighbor_interface, "")
+                    if neighbor_ip:
+                        config += f"  neighbor {neighbor_ip} remote-as {neighbor.get('remote_as', '')}\n"
+                        if 'update_source' in neighbor:
+                            config += f"  neighbor {neighbor_ip} update-source {neighbor['update_source']}\n"
+                        config += f"  neighbor {neighbor_ip} activate\n"
             config += " exit-address-family\n"
-            config += " !\n"
     
     config += "!\n"
     return config
@@ -154,12 +172,15 @@ def generate_config_files(intent_file_path):
             config += generate_vrf_config(router['vrf'],router['bgp'])
 
         config += generate_static_config_2()
-        config += generate_line_config()
+        
         config += generate_interface_config(router['interfaces'])
+        
         # Generate BGP config if needed
         if 'bgp' in router:
             vrfs = router.get('vrf', None)  # This assumes 'vrf' is a list of VRFs
             config += generate_bgp_config(router['bgp'], vrfs)
+
+        config += generate_line_config()
 
         # Saving the configuration to a file
         config_filename = f"{router['name']}_config.txt"

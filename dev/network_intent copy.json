@@ -2,6 +2,8 @@
   "routers": [
     {
       "name": "PE1",
+      
+      
       "interfaces": [
         {
           "name": "GigabitEthernet1/0",
@@ -33,6 +35,7 @@
           "description": ""
         }
       ],
+
       "bgp": {
         "local_as": 111,
         "bgp_id":"1.1.1.1",
