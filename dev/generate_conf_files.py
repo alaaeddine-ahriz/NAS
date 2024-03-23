@@ -1,6 +1,12 @@
+import os
 import json
-
 from datetime import datetime
+
+# Define the directory where configuration files will be saved
+config_dir = 'dev/config_files'
+
+# Ensure the directory exists
+os.makedirs(config_dir, exist_ok=True)
 
 # Define the current UTC time
 current_utc_time = datetime.utcnow()
@@ -9,7 +15,6 @@ current_utc_time = datetime.utcnow()
 formatted_time = current_utc_time.strftime('%H:%M:%S UTC %a %b %d %Y')
 
 formatted_time
-
 
 def generate_static_config_1(timestamp=formatted_time):
     return f"""
@@ -183,7 +188,7 @@ def generate_config_files(intent_file_path):
         config += generate_line_config()
 
         # Saving the configuration to a file
-        config_filename = f"{router['name']}_config.txt"
+        config_filename = os.path.join(config_dir, f"{router['name']}_config.txt")
         with open(config_filename, 'w') as config_file:
             config_file.write(config)
         print(f"Configuration for {router['name']} written to {config_filename}")
