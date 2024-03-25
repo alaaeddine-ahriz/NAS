@@ -1,0 +1,96 @@
+{
+    "routers": [
+      {
+        "name": "PE1",
+        "interfaces": [
+          {
+            "name": "GigabitEthernet1/0",
+            "ip_address": "192.168.1.1",
+            "subnet_mask": "255.255.255.252",
+            "description": "Link to P1",
+            "mpls": true
+          },
+          {
+            "name": "GigabitEthernet2/0",
+            "ip_address": "111.20.31.2",
+            "subnet_mask": "255.255.255.252",
+            "description": "Link to CE1",
+            "vrf": "client_1"
+          },
+          {
+            "name": "GigabitEthernet3/0",
+            "ip_address": "111.20.32.2",
+            "subnet_mask": "255.255.255.252",
+            "description": "Link to CE2"
+          },
+          {
+            "name": "Loopback0",
+            "ip_address": "1.1.1.1",
+            "subnet_mask": "255.255.255.255",
+            "description": "PE1 Loopback Interface"
+          }
+        ],
+        "bgp": {
+          "local_as": 111,
+          "bgp_id": "1.1.1.1",
+          "neighbors": [
+            {
+              "neighbor_name": "PE2",
+              "update_source": "Loopback0",
+              "vrf": "client_1",
+              "address_family": "vpnv4"
+            }
+          ]
+        },
+        "vrf": [
+          {
+            "nom_vrf": "client_1",
+            "route_distinguisher_client": 10,
+            "route_target": "111:1"
+          }
+        ]
+      },
+      {
+        "name": "PE2",
+        "interfaces": [
+          {
+            "name": "GigabitEthernet1/0",
+            "ip_address": "111.20.33.2",
+            "subnet_mask": "255.255.255.252",
+            "description": "Link to CEN1"
+          },
+          {
+            "name": "GigabitEthernet2/0",
+            "ip_address": "192.168.1.10",
+            "subnet_mask": "255.255.255.252",
+            "description": "Link to P2",
+            "mpls": true
+          },
+          {
+            "name": "GigabitEthernet3/0",
+            "ip_address": "111.20.34.2",
+            "subnet_mask": "255.255.255.252",
+            "description": "Link to CEN2"
+          },
+          {
+            "name": "Loopback0",
+            "ip_address": "2.2.2.2",
+            "subnet_mask": "255.255.255.255",
+            "description": "PE2 Loopback Interface"
+          }
+        ],
+        "bgp": {
+          "local_as": 111,
+          "bgp_id": "2.2.2.2",
+          "neighbors": [
+            {
+              "neighbor_name": "PE1",
+              "update_source": "Loopback0",
+              "address_family": "vpnv4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+  

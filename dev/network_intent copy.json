@@ -1,9 +1,7 @@
 {
   "routers": [
     {
-      "name": "PE1",
-      
-      
+      "name": "PE1",      
       "interfaces": [
         {
           "name": "GigabitEthernet1/0",
@@ -65,8 +63,6 @@
             "route_distinguisher_client": 10,
             "route_target":"111:1"
           }
-        
-        
         ]
       
     },
