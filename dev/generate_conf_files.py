@@ -16,6 +16,7 @@ formatted_time = current_utc_time.strftime('%H:%M:%S UTC %a %b %d %Y')
 
 formatted_time
 
+
 def generate_static_config_1(timestamp=formatted_time):
     return f"""
 ! Last configuration change at {timestamp}
@@ -163,10 +164,29 @@ line vty 0 4
 end
 """
 
+def extract_router_interface_ips(intent_data):
+    """
+    Extracts the IP addresses for each router's interfaces from the network intent data.
+
+    :param intent_data: The network intent data loaded from the JSON file.
+    :return: A dictionary mapping router and interface names to their IP addresses.
+    """
+    router_interface_ips = {}
+    for router in intent_data['routers']:
+        interface_ips = {}
+        for interface in router['interfaces']:
+            # Assuming interface names are unique per router
+            interface_ips[interface['name']] = interface['ip_address']
+        router_interface_ips[router['name']] = interface_ips
+    return router_interface_ips
+
 def generate_config_files(intent_file_path):
     with open(intent_file_path, 'r') as file:
         intent_data = json.load(file)
     
+    # Extract router interface IPs
+    router_interface_ips = extract_router_interface_ips(intent_data)
+
     for router in intent_data['routers']:
         config = f"hostname {router['name']}\n"
 
@@ -174,16 +194,16 @@ def generate_config_files(intent_file_path):
 
         # Generate VRF config if needed
         if 'vrf' in router:
-            config += generate_vrf_config(router['vrf'],router['bgp'])
+            config += generate_vrf_config(router['vrf'], router['bgp'])
 
         config += generate_static_config_2()
         
         config += generate_interface_config(router['interfaces'])
         
-        # Generate BGP config if needed
+        # Generate BGP config if needed, now using router_interface_ips
         if 'bgp' in router:
-            vrfs = router.get('vrf', None)  # This assumes 'vrf' is a list of VRFs
-            config += generate_bgp_config(router['bgp'], vrfs)
+            vrfs = router.get('vrf', None)
+            config += generate_bgp_config(router['bgp'], router_interface_ips, vrfs)
 
         config += generate_line_config()
 
