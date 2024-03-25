@@ -45,7 +45,7 @@
           {
             "name": "CE2",
             "interface": "GigabitEthernet3/0",
-            "vrf": "client_1"
+            "vrf": "client_2"
           }
         ]
       },

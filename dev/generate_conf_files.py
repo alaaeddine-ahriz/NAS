@@ -194,5 +194,5 @@ def generate_config_files(intent_file_path):
         print(f"Configuration for {router['name']} written to {config_filename}")
 
 # To use this script, make sure you have a 'network_intent.json' file in the same directory
-intent_file_path = 'C:\\Users\\alaae\\Documents\\INSA Lyon\\3 TCA\\Projet NAS\\NAS\\dev\\network_intent copy.json'
+intent_file_path = 'C:\\Users\\nathan.lehodey\\Desktop\\NAS\\dev\\network_intent copy 2.json'
 generate_config_files(intent_file_path)
