@@ -87,36 +87,32 @@ def generate_bgp_config(bgp, router_interface_ips, vrfs=None):
     config += f" bgp router-id {bgp['bgp_id']}\n"
     config += " bgp log-neighbor-changes\n"
 
-    # Check and prepare global neighbors
-    for neighbor in bgp.get('neighbors', []):
-        if 'vrf' not in neighbor or not neighbor['vrf']:
-            # Assuming a neighbor might not always have 'name', handle accordingly
-            neighbor_ip = ''
-            if 'name' in neighbor and 'interface' in neighbor:
-                neighbor_name = neighbor['name']
-                neighbor_interface = neighbor['interface']
-                neighbor_ip = router_interface_ips.get(neighbor_name, {}).get(neighbor_interface, "")
-            elif 'neighbor_ip' in neighbor:
-                neighbor_ip = neighbor['neighbor_ip']
-            
-            if neighbor_ip:
-                config += f" neighbor {neighbor_ip} remote-as {neighbor.get('remote_as', '')}\n"
-                if 'update_source' in neighbor:
-                    config += f" neighbor {neighbor_ip} update-source {neighbor['update_source']}\n"
-    
-    # Configure global address-family for ipv4
+    # Configuration des voisins BGP pour IPv4
     config += " address-family ipv4\n"
     for neighbor in bgp.get('neighbors', []):
-        if 'vrf' not in neighbor or not neighbor['vrf']:
+        if 'address_family' in neighbor and neighbor['address_family'] == 'ipv4':
             neighbor_ip = neighbor.get('neighbor_ip', '')
-            if 'name' in neighbor and 'interface' in neighbor:
-                neighbor_name = neighbor['name']
+            if 'neighbor_name' in neighbor and 'interface' in neighbor:
+                neighbor_name = neighbor['neighbor_name']
                 neighbor_interface = neighbor['interface']
                 neighbor_ip = router_interface_ips.get(neighbor_name, {}).get(neighbor_interface, "")
             if neighbor_ip:
                 config += f"  neighbor {neighbor_ip} activate\n"
     config += " exit-address-family\n"
 
+    # Configuration des voisins BGP pour vpnv4
+    config += " address-family vpnv4\n"
+    for neighbor in bgp.get('neighbors', []):
+        if 'address_family' in neighbor and neighbor['address_family'] == 'vpnv4':
+            neighbor_ip = neighbor.get('neighbor_ip', '')
+            if 'neighbor_name' in neighbor and 'interface' in neighbor:
+                neighbor_name = neighbor['neighbor_name']
+                neighbor_interface = neighbor['interface']
+                neighbor_ip = router_interface_ips.get(neighbor_name, {}).get(neighbor_interface, "")
+            if neighbor_ip:
+                config += f"  neighbor {neighbor_ip} activate\n"
+    config += " exit-address-family\n"
+    
     # Configuring VRF-specific neighbors
     if vrfs:
         for vrf in vrfs:
@@ -216,5 +212,5 @@ def generate_config_files(intent_file_path):
         print(f"Configuration for {router['name']} written to {config_filename}")
 
 # To use this script, make sure you have a 'network_intent.json' file in the same directory
-intent_file_path = 'C:\\Users\\nathan.lehodey\\Desktop\\NAS\\dev\\network_intent copy 2.json'
+intent_file_path = 'dev\\network_intent copy 2.json'
 generate_config_files(intent_file_path)
