@@ -65,6 +65,8 @@ def generate_interface_config(interfaces):
     ospf_process_id = ""
     for interface in interfaces:
         config += f"interface {interface['name']}\n"
+        if "vrf" in interface:
+            config += f"vrf forwarding {interface['vrf']}\n"
         config += f" ip address {interface['ip_address']} {interface['subnet_mask']}\n"
         config += " negotiation auto\n"
         if "ospf" in interface:
