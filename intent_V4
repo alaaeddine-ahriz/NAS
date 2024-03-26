@@ -42,18 +42,20 @@
             {
                 "neighbor_name": "PE2",
                 "update_source": "Loopback0",
-                "address_family": ["vpnv4", "ipv4vrf"],
+                "address_family": ["vpnv4"],
                 "rtimport": ["111:3", "111:4"],
                 "rtexport": ["111:1", "111:2"]
             },
             {
                 "name": "A1",
                 "interface": "GigabitEthernet2/0",
+                "address_family": ["ipv4vrf"],
                 "vrf": "client_1"
             },
             {
                 "name": "B1",
                 "interface": "GigabitEthernet3/0",
+                "address_family": ["ipv4vrf"],
                 "vrf": "client_2"
             }
           ]
@@ -125,18 +127,20 @@
             {
               "neighbor_name": "PE1",
               "update_source": "Loopback0",
-              "address_family": ["vpnv4", "ipv4vrf"],
+              "address_family": ["vpnv4"],
               "rtimport": ["111:1", "111:2"],
               "rtexport": ["111:3", "111:4"]
             },
             {
                 "name": "A2",
                 "interface": "GigabitEthernet1/0",
+                "address_family": ["ipv4vrf"],
                 "vrf": "client_3"
             },
             {
                 "name": "B2",
                 "interface": "GigabitEthernet3/0",
+                "address_family": ["ipv4vrf"],
                 "vrf": "client_4"
             }
           ]
@@ -228,8 +232,7 @@
           "neighbors": [
             {
               "name": "PE1",
-              "interface": "GigabitEthernet2/0",
-              "vrf": "client_1"
+              "interface": "GigabitEthernet2/0"
             }
           ]
         }
@@ -254,8 +257,7 @@
           "neighbors": [
             {
               "name": "PE1",
-              "interface": "GigabitEthernet3/0",
-              "vrf": "client_1"
+              "interface": "GigabitEthernet3/0"
             }
           ]
         }
