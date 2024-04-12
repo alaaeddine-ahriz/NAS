@@ -26,7 +26,7 @@ Ensuite un code python lit ce fichier intention et produit en conséquence un fi
 En faisant un pull du projet, vous aurez en local entre autres le fichier GNS3 **GNS3_ARCHI.gns3** et le répertoire qui contient les configs
 des routeurs **project-files**.
 
-Il suffit juste (en ayant GNS3 bien configuré sur votre machine en local avec la bonne image de routeur), de lancer le fichier **fin.gnS3**.d
+Il suffit juste (en ayant GNS3 bien configuré sur votre machine en local avec la bonne image de routeur), de lancer le fichier **GNS3_ARCHI.gns3**.
 
 ### Génération de Configuration avec python depuis le fichier d'intention
 
