@@ -40,9 +40,13 @@ Les fichiers de configuration seront sauvegardés dans le répertoire dev/config
 ### Déploiement des Configurations avec telnet
 
 Utiliser le script Python **deploy_telnet.py** pour déployer les configurations sur chaque routeur.
+
 Ce script se connectera à chaque routeur via Telnet et enverra les commandes de configuration.
+
 Le script nécessite les port sur lesquels sont connectés les routeurs en local: 
+
     - il faut donc consulter les numéros de port des routeur au niveau de l'UI de GNS3 (à gauche souvent): penser à bien démarrer tous les routeurs!
+    
     - ensuite dans le code source **deploy_telnet.py**, faut renseigner les ports pour les routeurs correspondant dans le dictionnaire **routers_gns3**: par exemple routers_gns3 = {
                                                         "PE1": "5002",
                                                         "PE2": "5006",
