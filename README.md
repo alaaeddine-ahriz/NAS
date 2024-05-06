@@ -85,3 +85,5 @@ Route reflector : Les routeurs P3 et P4 agissent en tant que route reflectors et
 - L'automatisation de la configuration et du déploiement est cruciale pour ce projet. Les scripts Python fournis facilitent grandement ce processus.
 - Assurez-vous de suivre les phases du projet dans l'ordre indiqué pour une progression logique et méthodique.
 - Pour des détails spécifiques sur la configuration des routeurs et des protocoles, référez-vous aux ressources Cisco IOS et aux documents de référence mentionnés dans le projet.
+- Lien vers l'ancien GitHub contenant les premièrs commits https://github.com/Mikawx3/CISCO_CONF_AUTOMATION.
+
